@@ -36,23 +36,23 @@ async def on_rating_command(message: types.Message):
 
 
 async def on_user_texted(message: types.Message):
-    # try:
-    request_id = db.save_request(message.text, message.from_user.username)
-    images = db.get_all_images()
-    result = similar_str.find_most_similar(message.text, images)
-    db.save_result(request_id, result)
+    try:
+        request_id = db.save_request(message.text, message.from_user.username)
+        images = db.get_all_images()
+        result = similar_str.find_most_similar(message.text, images)
+        db.save_result(request_id, result)
 
-    dirname = db.get_local_image_path(result.service_id)
-    random = randint(1, 100)
-    full_path = os.environ.get('IMAGE_PATH') + dirname + result.filename + ".gif?random={}".format(random)
+        dirname = db.get_local_image_path(result.service_id)
+        random = randint(1, 100)
+        full_path = os.environ.get('IMAGE_PATH') + dirname + result.filename + ".gif?random={}".format(random)
 
-    await message.answer_video(full_path)
-    await message.answer(result.description)
+        await message.answer_video(full_path)
+        await message.answer(result.description)
 
-
-# except Exception as e:
-# raise e
-# await message.answer("Something went wrong. {}".format(str(e)))
+    except Exception as e:
+        await message.answer("Sry, something went wrong.")
+        # raise e
+        #await message.answer("Something went wrong. {}".format(str(e)))
 
 
 # Functions for Yandex.Cloud
