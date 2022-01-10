@@ -37,6 +37,7 @@ async def on_rating_command(message: types.Message):
 
 async def on_user_texted(message: types.Message):
     try:
+        await message.answer('Sec. I am looking for a mem...')
         request_id = db.save_request(message.text, message.from_user.username)
         images = db.get_all_images()
         result = similar_str.find_most_similar(message.text, images)
